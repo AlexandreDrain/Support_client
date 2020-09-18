@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center mt-5 mb-3">Utilisateurs</h1>
+
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Service</th>
+                <th>Inscrit le </th>
+                {% if is_granted("ROLE_ADMIN") %}
+                    <th>Roles</th>
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <th>{{ user.firstName }}</th>
+                    <th>{{ user.lastName }}</th>
+                    <th>{{ user.email }}</th>
+                    <th>{{ user.service == null ? "null"  : user.service }}</th>
+                    <th>{{ user.createdAt|date("Y-m-d") }}</th>
+                    {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_CUSTOMER_ADMIN") %}
+                        <th>
+                            {% for role in user.roles %}
+                                {{ role }},
+                            {% endfor %}
+                        </th>
+
+                        <th><a href="{{ path('show_user', {'id': user.id}) }}" class="btn btn-outline-primary">Détails de l'utilisateur</a></th>
+                        <th><a href="{{ path('modify_user', {'id': user.id}) }}" class="btn btn-outline-warning">Modifier l'utilisateur</a></th>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <th> No data found</th>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ url('home') }}">3WA_Alexandre</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{{ url('home') }}">Home</a>
+        </div>
+        {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="{{ url('show_all_users') }}">Utilisateurs</a>
+            </div>
+            {% if is_granted("ROLE_ADMIN") %}
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ url('user_register') }}">Enregistrement</a>
+                </div>
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ url('customer_register') }}">CustomerRegistration</a>
+                </div>
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ url('service_index') }}">Services</a>
+                </div>
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ url('ticket_index') }}">Tickets</a>
+                </div>
+            {% elseif is_granted("ROLE_CUSTOMER") %}
+                {% if is_granted("ROLE_CUSTOMER_ADMIN") %}
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="{{ url('customer_sub_register') }}">SubCustomerRegistration</a>
+                    </div>
+                {% endif %}
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ url('ticket_new') }}">Entrer un ticket</a>
+                </div>
+            {% endif %}
+        {% endif %}
+        <div class="ml-auto d-flex flex-row">
+            {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ url('app_logout') }}">Se déconnecter</a>
+                </div>
+            {% else %}
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ url('app_login') }}">Se connecter</a>
+                </div>
+            {% endif %}
+        </div>
+        {# <form class="form-inline my-2 my-lg-0 ml-auto" action="{{ path('searched') }}" method="post">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchedProduct">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> #}
+    </div>
+</nav>

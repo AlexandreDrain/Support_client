@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tout les Tickets{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h1 class="text-center">Tout les tickets en cours</h1><a href="{{ path('ticket_new') }}" class="btn btn-outline-success mt-3">Créer un nouveau ticket</a>
+    {% for ticket in tickets %}
+        <div class="card {{ ticket.priority == 0 ? "border-dark" : ticket.priority == 1 ? "border-primary" : ticket.priority == 2 ? "border-warning" : ticket.priority == 3 ? "border-danger" }} mt-5">
+            <div class="card-header d-flex">
+                <div>
+                    {{ ticket.id }}.
+                    {% for service in ticket.services %}
+                        {{ service }}/
+                    {% endfor %}
+                </div> 
+                <div class="ml-auto d-flex">
+                    {% if ticket.fileName != null %}
+                        <div class="mr-3 badge badge-primary">
+                            fichier joint
+                        </div>
+                    {% endif %}
+                    <div class="badge {{ ticket.priority == 0 ? "badge-dark" : ticket.priority == 1 ? "badge-primary" : ticket.priority == 2 ? "badge-warning" : ticket.priority == 3 ? "badge-danger" }} text-wrap">
+                        Priorité : {{ ticket.priority == 0 ? "Nulle" : ticket.priority == 1 ? "Pas urgent" : ticket.priority == 2 ? "A voir rapidement" : ticket.priority == 3 ? "Urgent !" }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body {# {{ ticket.priority == 0 ? "text-dark" : ticket.priority == 1 ? "text-primary" : ticket.priority == 2 ? "text-warning" : ticket.priority == 3 ? "text-danger" }} #}">
+                <blockquote class="blockquote mb-0">
+                    <h5 class="card-title">
+                        {{ ticket.titre }}
+                    </h5>
+                    <p>{{ ticket.description }}</p>
+                    <footer class="blockquote-footer">
+                        <a href="{{ path('ticket_show', {'id': ticket.id}) }}" class="btn btn-outline-primary">Détails</a>
+                        {% if not is_granted("ROLE_CUSTOMER") or is_granted("ROLE_ADMIN") %}
+                            <a href="{{ path('ticket_edit', {'id': ticket.id}) }}" class="btn btn-outline-warning">Modifier</a>
+                        {% endif %}
+                    </footer>
+                </blockquote>
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails Ticket{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h1 class="text-center">Ticket</h1 class="text-center">
+    <a href="{{ path('ticket_index') }}" class="btn btn-outline-dark">Retour à la liste</a>
+    
+    <div class="accordion" id="accordion">
+        <div class="card {{ ticket.priority == 0 ? "border-dark" : ticket.priority == 1 ? "border-primary" : ticket.priority == 2 ? "border-warning" : ticket.priority == 3 ? "border-danger" }} mt-3">
+            <div class="card-header d-flex" id="headingOne">
+                <p>{{ ticket.id }}. {{ ticket.titre }}</p>
+                {% if ticket.fileName != null %}
+                    <a class="ml-3" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Afficher l'image</a>
+                {% endif %}
+                <div class="ml-auto badge {{ ticket.priority == 0 ? "badge-dark" : ticket.priority == 1 ? "badge-primary" : ticket.priority == 2 ? "badge-warning" : ticket.priority == 3 ? "badge-danger" }} text-wrap">
+                    Priorité : {{ ticket.priority == 0 ? "Nulle" : ticket.priority == 1 ? "Pas urgent" : ticket.priority == 2 ? "A voir rapidement" : ticket.priority == 3 ? "Urgent !" }}
+                </div>
+            </div>
+            <div class="card-body {# {{ ticket.priority == 0 ? "text-dark" : ticket.priority == 1 ? "text-primary" : ticket.priority == 2 ? "text-warning" : ticket.priority == 3 ? "text-danger" }} #}">
+                <blockquote class="blockquote mb-0">
+                    <p>{{ ticket.description }}</p>
+                    <footer class="blockquote-footer d-flex">
+                        <div>Écrit le : {{ ticket.updatedAt != null ? ticket.updatedAt|date("Y-m-d H:i:s") : ticket.createdAt|date("Y-m-d H:i:s") }}</div>
+                        {% if not is_granted("ROLE_CUSTOMER") or is_granted("ROLE_ADMIN") %}
+                            <a href="{{ path('ticket_edit', {'id': ticket.id}) }}" class="btn btn-outline-warning ml-auto">Modifier</a>
+                        {% endif %}
+                    </footer>
+                </blockquote>
+            </div>
+            {% if ticket.fileName != null %}
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    <a href="{{ asset('assets/uploads/files/' ~ ticket.fileName ) }}"><img src="{{ asset('assets/uploads/files/' ~ ticket.fileName ) }}" class="card-img-top" alt="Fichier Joint"></a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {{ include('ticket/_delete_form.html.twig') }}
+    <hr>
+    {% for message in messages %}
+    <div class="card border-dark mb-3">
+        <div class="card-header">
+            Commentaire à propos de {{ message.ticket.titre }}
+        </div>
+        <div class="card-body d-flex">
+            <div>
+                <blockquote class="blockquote mb-0">
+                    <p>{{ message.content }}</p>
+                    <footer class="blockquote-footer">
+                        Écrit par : {{ message.author }} le {{ message.createdAt|date("Y-m-d") }} a {{  message.createdAt|date("H:i:s") }}
+                    </footer>
+                </blockquote>
+            </div>
+            {% if message.fileName != null %}
+                <div class="ml-auto">
+                    <a href="{{ asset('assets/uploads/files/' ~ message.fileName ) }}"><img src="{{ asset('assets/uploads/files/' ~ message.fileName ) }}" class="card-img-top" alt="Fichier Joint" style="width: 150px; height: auto;"></a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% if message.id != null %}
+        <hr>
+    {% endif %}
+    <h2 class="text-center">Écrire un message</h2>
+    <div class="mb-3 border border-dark rounded p-3">
+        {{ include('ticket/_form.html.twig', {'button_label': 'Envoyer le message ?'}) }}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascriptsPLus %}
+<script src="{{ asset("assets/js/index.js") }}"></script>
+{% endblock javascriptsPLus %}

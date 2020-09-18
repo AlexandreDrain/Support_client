@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Ticket{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h1 class="text-center">Create new Ticket</h1>
+    
+    {{ include('ticket/_form.html.twig') }}
+    
+    <a href="{{ path('ticket_index') }}" class="btn btn-outline-dark">Retour à la liste</a>
+</div>
+{% endblock %}
+
+{% block javascriptsPLus %}
+<script src="{{ asset("assets/js/index.js") }}"></script>
+{% endblock javascriptsPLus %}

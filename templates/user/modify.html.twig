@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center">Inscription</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.roles) }}
+
+        <input type="submit" class="btn btn-outline-success" value="Valider la modification">
+    {{ form_end(form) }}
+    <a href="{{ path("delete_user", {id: user.id}) }}" class="btn btn-outline-danger mt-5">Supprimer l'agent</a>
+</div>
+{% endblock %}

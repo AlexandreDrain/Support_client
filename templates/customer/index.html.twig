@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Customer register{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center">Inscription</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.customer) }}
+        {{ form_row(form.user) }}
+    <input type="submit" class="btn btn-outline-success" value="Inscrire">
+{{ form_end(form) }}
+</div>
+{% endblock %}

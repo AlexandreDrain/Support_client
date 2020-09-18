@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails utilisateur{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center mt-5 mb-3">Détails utilisateur</h1>
+
+    <div class="card m-auto" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ user.firstName }} {{ user.lastName }}</h5>
+            <p class="card-text">
+                Email : {{ user.email }} 
+                <br>
+                Inscrit le : {{ user.createdAt|date("Y-m-d") }}
+            </p>
+        </div>
+        <a href="{{ path('show_all_users') }}" class="btn btn-outline-dark col-md-6 m-1">Retour à la liste</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Service{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h1>Créer un nouveau service</h1>
+    
+    {{ include('service/_form.html.twig', {'button_label': 'Valider'}) }}
+    
+    <a href="{{ path('service_index') }}" class="btn btn-outline-dark">Retour à la liste</a>
+</div>
+{% endblock %}

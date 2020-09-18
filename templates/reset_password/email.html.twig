@@ -1,0 +1,15 @@
+<h1>Bonjour {{ firstname }} {{lastname }}!</h1>
+ 
+<p>
+    Une demande de mot de passe oublié a été effectué sur notre site.<br />
+    Pour réinitialiser votre mot de passe 
+    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">cliquez ici</a>
+    <br /> ou copiez ce lien : {{ url('app_reset_password', {token: resetToken.token}) }}
+    <br /> Si vous n'êtes pas à l'origine de cette demande ignorer ce mail.
+    <br /> Ce lien expire dans {{ tokenLifetime|date('g') }} heure(s)..
+</p>
+ 
+<p>
+    A bientôt !
+    L'équipe du support Client
+</p>
